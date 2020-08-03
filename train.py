@@ -239,8 +239,16 @@ def train(args, dataset, generator, discriminator):
 
         if (i + 1) % 10000 == 0:
             torch.save(
-                g_running.state_dict(), f'checkpoint/{str(i + 1).zfill(6)}.model'
+                {
+                    'generator': generator.module.state_dict(),
+                    'discriminator': discriminator.module.state_dict(),
+                    'g_optimizer': g_optimizer.state_dict(),
+                    'd_optimizer': d_optimizer.state_dict(),
+                    'g_running': g_running.state_dict(),
+                },
+                f'checkpoint/{str(i + 1).zfill(6)}.model',
             )
+			
 
         state_msg = (
             f'Size: {4 * 2 ** step}; G: {gen_loss_val:.3f}; D: {disc_loss_val:.3f};'
@@ -267,7 +275,7 @@ if __name__ == '__main__':
     parser.add_argument('--lr', default=0.001, type=float, help='learning rate')
     parser.add_argument('--sched', action='store_true', help='use lr scheduling')
     parser.add_argument('--init_size', default=8, type=int, help='initial image size')
-    parser.add_argument('--max_size', default=1024, type=int, help='max image size')
+    parser.add_argument('--max_size', default=128, type=int, help='max image size')
     parser.add_argument(
         '--ckpt', default=None, type=str, help='load from previous checkpoints'
     )
