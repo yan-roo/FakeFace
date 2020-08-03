@@ -73,9 +73,11 @@ def style_mixing(generator, step, mean_style, n_source, n_target, device):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--size', type=int, default=1024, help='size of the image')
+    parser.add_argument('--size', type=int, default=128, help='size of the image') # Follow training image size
     parser.add_argument('--n_row', type=int, default=3, help='number of rows of sample matrix')
     parser.add_argument('--n_col', type=int, default=5, help='number of columns of sample matrix')
+    parser.add_argument('--sample', type=int, default=1, help='number of sample')
+    parser.add_argument('--style_mixing', type=int, default=1, help='number of style mixing sample')
     parser.add_argument('path', type=str, help='path to checkpoint file')
     
     args = parser.parse_args()
@@ -83,18 +85,19 @@ if __name__ == '__main__':
     device = 'cuda'
 
     generator = StyledGenerator(512).to(device)
-    generator.load_state_dict(torch.load(args.path)['g_running'])
+    try: generator.load_state_dict(torch.load(args.path)["g_running"])
+    except: generator.load_state_dict(torch.load(args.path))
     generator.eval()
 
     mean_style = get_mean_style(generator, device)
 
     step = int(math.log(args.size, 2)) - 2
     
-    img = sample(generator, step, mean_style, args.n_row * args.n_col, device)
-    utils.save_image(img, 'sample.png', nrow=args.n_col, normalize=True, range=(-1, 1))
-    
-    for j in range(20):
-        img = style_mixing(generator, step, mean_style, args.n_col, args.n_row, device)
-        utils.save_image(
-            img, f'sample_mixing_{j}.png', nrow=args.n_col + 1, normalize=True, range=(-1, 1)
+    for j in range(args.sample):
+        img = sample(generator, step, mean_style, args.n_row * args.n_col, device)
+        utils.save_image(img, f'images/{j:03}_sample.png', nrow=args.n_col, normalize=True, range=(-1, 1))
+    for j in range(args.style_mixing):
+	    img = style_mixing(generator, step, mean_style, args.n_col, args.n_row, device)
+	    utils.save_image(
+		    img, f'sample_mixing_{j}.png', nrow=args.n_col + 1, normalize=True, range=(-1, 1)
         )
