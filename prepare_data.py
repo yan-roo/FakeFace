@@ -20,7 +20,7 @@ def resize_and_convert(img, size, quality=100):
     return val
 
 
-def resize_multiple(img, sizes=(8, 16, 32, 64, 128, 256, 512, 1024), quality=100):
+def resize_multiple(img, sizes=(8, 16, 32, 64, 128), quality=100):
     imgs = []
 
     for size in sizes:
@@ -38,7 +38,7 @@ def resize_worker(img_file, sizes):
     return i, out
 
 
-def prepare(transaction, dataset, n_worker, sizes=(8, 16, 32, 64, 128, 256, 512, 1024)):
+def prepare(transaction, dataset, n_worker, sizes=(8, 16, 32, 64, 128)):
     resize_fn = partial(resize_worker, sizes=sizes)
 
     files = sorted(dataset.imgs, key=lambda x: x[0])
