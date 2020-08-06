@@ -1,6 +1,6 @@
 # Style-Based GAN in PyTorch
-![Sample of the model trained on CelebA](doc/sample_ffhq_new.png)
-![Style mixing sample of the model trained on CelebA](doc/sample_mixing_ffhq_new.png)
+![Sample of the model trained on CelebA](doc/sample_celeba.png)
+![Style mixing sample of the model trained on CelebA](doc/sample_mixing_celeba.png)
 
 Implementation of A Style-Based Generator Architecture for Generative Adversarial Networks (https://arxiv.org/abs/1812.04948) in PyTorch
 
@@ -65,7 +65,7 @@ python generate.py --size 128 --sample 1 --style_mixing 1 checkpoint/*.model
 ```
 Resolution | Model & Optimizer 
 -----------|-------------------
-128px      | [Link](https://drive.google.com/open?id=1QlXFPIOFzsJyjZ1AtfpnVhqW4Z0r8GLZ)
+128px      | [Link](hhttps://drive.google.com/file/d/1IxDVmZhSqx03b5HmRGqKqcwgItU41PCa/view?usp=sharing)
 
 There still some strange faces and background in the results. 
 
